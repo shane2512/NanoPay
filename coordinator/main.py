@@ -43,9 +43,9 @@ class ConnectionManager:
             self.disconnect(socket)
 
 
-app = FastAPI(title="NeuroPay Coordinator")
+app = FastAPI(title="NanoPay Coordinator")
 
-_cors_raw = os.getenv("NEUROPAY_CORS_ALLOW_ORIGINS", "*")
+_cors_raw = os.getenv("NANOPAY_CORS_ALLOW_ORIGINS", "*")
 _cors_origins = [item.strip() for item in _cors_raw.split(",") if item.strip()]
 if not _cors_origins:
     _cors_origins = ["*"]
@@ -53,7 +53,7 @@ if not _cors_origins:
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_cors_origins,
-    allow_credentials=os.getenv("NEUROPAY_CORS_ALLOW_CREDENTIALS", "false").lower() == "true",
+    allow_credentials=os.getenv("NANOPAY_CORS_ALLOW_CREDENTIALS", "false").lower() == "true",
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -106,7 +106,7 @@ async def run_research(request: ResearchQuery):
     loop_delay = float(os.getenv("COORDINATOR_LOOP_DELAY_SECONDS", "0.2"))
     explorer_base = os.getenv(
         "ARC_EXPLORER_URL",
-        "https://testnet.arcscan.app/address/0xcF1c22178A8F195860581ff18E17337253EDc340",
+        "https://testnet.arcscan.app/address/0x0a5334a25def66b398a1f943227812ff2b511c89",
     )
 
     # 1) Decompose user query with Gemini Pro.

@@ -57,7 +57,7 @@ class CoordinatorIntelligence:
     ) -> List[Dict[str, str]]:
         """Decompose query into domain-routed sub-questions."""
         prompt = """
-You are NeuroPay's coordinator.
+You are NanoPay's coordinator.
 
 Task:
 1) Decompose the user query into {min_items}-{max_items} standalone sub-questions.
@@ -145,23 +145,37 @@ Existing questions to avoid:
     def synthesize_report(self, original_query: str, results: List[Dict[str, str]]) -> str:
         evidence = []
         for idx, item in enumerate(results, start=1):
+            domain = str(item.get("domain", "GENERAL") or "GENERAL").strip().upper()
+            question = str(item.get("question", "") or "").strip()
+            answer = self._normalize_answer_text(item.get("answer", ""))
+            if not answer:
+                answer = "No specialist answer text returned; payment was settled."
+
+            # Keep each evidence item short to prevent aggressive prompt truncation.
+            answer_snippet = answer if len(answer) <= 280 else "{}...".format(answer[:277])
             evidence.append(
-                "{}. [{}] Q: {}\nA: {}".format(
+                "{}. [{}] Q: {}\nEvidence: {}".format(
                     idx,
-                    item.get("domain", "GENERAL"),
-                    item.get("question", ""),
-                    item.get("answer", ""),
+                    domain,
+                    question,
+                    answer_snippet,
                 )
             )
 
         prompt = """
-You are NeuroPay's final report synthesizer.
+You are NanoPay's final report synthesizer.
 
 Create a concise markdown report with sections:
 1) Executive Summary
 2) Key Findings by Domain
 3) Risks and Unknowns
 4) Recommended Next Actions
+
+Rules:
+- Every section must contain meaningful content.
+- Include concrete facts from Evidence.
+- Provide at least 2 bullet points per section.
+- If evidence is incomplete, state gaps explicitly.
 
 Original query:
 {original_query}
@@ -170,15 +184,144 @@ Evidence:
 {evidence}
 """.strip().format(original_query=original_query, evidence="\n\n".join(evidence))
 
+        fallback_report = self._build_deterministic_report(original_query, results)
+
         try:
-            return self.report_client.generate_text(
+            report = self.report_client.generate_text(
                 prompt=prompt,
                 temperature=0.2,
                 max_output_tokens=600,
             )
+            if self._report_has_substance(report):
+                return report
+            print("Report synthesis returned low-content output; using deterministic fallback report.")
+            return fallback_report
         except GeminiRestError as exc:
             print("Report synthesis error: {}".format(exc))
-            return "## NeuroPay Report\n\nUnable to synthesize report due to Gemini API error."
+            return fallback_report
+
+    @staticmethod
+    def _normalize_answer_text(value) -> str:
+        return " ".join(str(value or "").split()).strip()
+
+    @staticmethod
+    def _report_has_substance(report: str) -> bool:
+        if not report or len(report.strip()) < 120:
+            return False
+
+        body_lines = []
+        for line in report.splitlines():
+            stripped = line.strip()
+            if not stripped:
+                continue
+            if stripped.startswith("#"):
+                continue
+            body_lines.append(stripped)
+
+        body_text = " ".join(body_lines)
+        return len(body_lines) >= 4 and len(body_text) >= 120
+
+    @classmethod
+    def _build_deterministic_report(
+        cls,
+        original_query: str,
+        results: List[Dict[str, str]],
+    ) -> str:
+        if not results:
+            return (
+                "## Executive Summary\n"
+                "- No specialist responses were captured for this run.\n"
+                "- The coordinator could not assemble evidence-backed findings.\n\n"
+                "## Key Findings by Domain\n"
+                "- No domain findings available.\n\n"
+                "## Risks and Unknowns\n"
+                "- High uncertainty: evidence set is empty.\n"
+                "- Results may be impacted by upstream timeouts or payment retries.\n\n"
+                "## Recommended Next Actions\n"
+                "- Re-run with a slightly higher budget cap and verify specialist health endpoints first.\n"
+                "- Capture domain-specific retries for any timed-out requests."
+            )
+
+        domain_order = ["FINANCE", "BIOTECH", "LEGAL", "GENERAL"]
+        grouped: Dict[str, List[Dict[str, str]]] = {domain: [] for domain in domain_order}
+        grouped["OTHER"] = []
+
+        empty_answer_count = 0
+        for item in results:
+            domain = str(item.get("domain", "GENERAL") or "GENERAL").strip().upper()
+            if domain not in grouped:
+                domain = "OTHER"
+
+            answer = cls._normalize_answer_text(item.get("answer", ""))
+            if not answer:
+                empty_answer_count += 1
+
+            grouped[domain].append(
+                {
+                    "question": str(item.get("question", "") or "").strip(),
+                    "answer": answer,
+                    "tx_hash": str(item.get("tx_hash", "") or "").strip(),
+                }
+            )
+
+        domains_with_findings = [d for d in domain_order if grouped[d]]
+        if grouped["OTHER"]:
+            domains_with_findings.append("OTHER")
+
+        lines: List[str] = []
+        lines.append("## Executive Summary")
+        lines.append("- Original query: {}".format(original_query))
+        lines.append(
+            "- Settled specialist responses: {} across {} domain(s): {}.".format(
+                len(results),
+                len(domains_with_findings),
+                ", ".join(domains_with_findings) if domains_with_findings else "none",
+            )
+        )
+        lines.append(
+            "- {} response(s) contained empty answer text and were filled with conservative placeholders.".format(
+                empty_answer_count
+            )
+        )
+        lines.append(
+            "- Evidence below summarizes paid specialist outputs and omits unsupported claims."
+        )
+
+        lines.append("")
+        lines.append("## Key Findings by Domain")
+        for domain in domain_order + ["OTHER"]:
+            entries = grouped[domain]
+            if not entries:
+                continue
+
+            lines.append("### {}".format(domain))
+            for entry in entries[:4]:
+                answer = entry["answer"] or "No specialist answer text returned; payment was settled."
+                if len(answer) > 220:
+                    answer = "{}...".format(answer[:217])
+
+                detail = "- {}: {}".format(entry["question"], answer)
+                if entry["tx_hash"]:
+                    detail = "{} (tx: {})".format(detail, entry["tx_hash"])
+                lines.append(detail)
+
+        lines.append("")
+        lines.append("## Risks and Unknowns")
+        lines.append("- Some specialist requests may timeout under load, reducing evidence coverage.")
+        lines.append(
+            "- Empty or minimal specialist outputs can reduce confidence in cross-domain synthesis."
+        )
+        lines.append(
+            "- Regulatory, market, and biotech conclusions should be validated against primary sources before production decisions."
+        )
+
+        lines.append("")
+        lines.append("## Recommended Next Actions")
+        lines.append("- Re-run targeted follow-up queries for domains with sparse evidence.")
+        lines.append("- Compare specialist claims against at least two external primary references per domain.")
+        lines.append("- Increase run budget and timeout settings only for domains that repeatedly underperform.")
+
+        return "\n".join(lines)
 
     @staticmethod
     def _normalize_sub_questions(

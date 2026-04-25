@@ -206,7 +206,7 @@ class BaseExpertAgent:
     async def generate_answer(self, query: str) -> str:
         """Generates a domain-specific answer with Gemini Flash via SDK."""
         prompt = (
-            "You are NeuroPay's {domain} expert agent. "
+            "You are NanoPay's {domain} expert agent. "
             "Provide a concise, factual, and actionable response with 3-5 bullets "
             "and one short conclusion. Query: {query}"
         ).format(domain=self.domain, query=query)
