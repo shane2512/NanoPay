@@ -20,10 +20,10 @@ def _save_tx_hashes(tx_hashes):
 
 def test_economic_proof():
     """
-    End-to-End Stress Test for NeuroPay.
+    End-to-End Stress Test for NanoPay.
     Goal: Prove 50+ real transactions on Arc L1.
     """
-    print("Starting NeuroPay Economic Proof Stress Test...")
+    print("Starting NanoPay Economic Proof Stress Test...")
 
     # Use a query designed to trigger a massive decomposition
     demo_query = {

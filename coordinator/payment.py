@@ -47,7 +47,12 @@ class CirclePaymentClient:
         if response.status_code != 402:
             # If it's 200, the agent might be open or already paid
             if response.status_code == 200:
-                return {"answer": response.json().get("answer"), "tx_hash": "already_paid", "amount": 0}
+                body = response.json()
+                return {
+                    "answer": self._extract_answer_text(body),
+                    "tx_hash": "already_paid",
+                    "amount": 0,
+                }
             raise Exception(f"Expected 402 Payment Required, got {response.status_code}")
 
         # Extract payment details from headers
@@ -109,11 +114,44 @@ class CirclePaymentClient:
         if final_response.status_code != 200:
             raise Exception(f"Failed to retrieve answer after payment: {final_response.status_code}")
 
+        final_body = final_response.json()
+
         return {
-            "answer": final_response.json().get("answer"),
+            "answer": self._extract_answer_text(final_body),
             "tx_hash": tx_hash,
             "amount": price,
         }
+
+    @staticmethod
+    def _extract_answer_text(body):
+        if not isinstance(body, dict):
+            return "Payment settled but specialist returned a non-JSON payload."
+
+        candidates = [
+            body.get("answer"),
+            body.get("content"),
+            body.get("result"),
+            body.get("message"),
+            body.get("analysis"),
+        ]
+
+        for value in candidates:
+            text = CirclePaymentClient._normalize_text(value)
+            if text:
+                return text
+
+        return "Payment settled but specialist returned no textual answer."
+
+    @staticmethod
+    def _normalize_text(value):
+        if value is None:
+            return ""
+        if isinstance(value, (dict, list)):
+            try:
+                value = json.dumps(value, ensure_ascii=False)
+            except TypeError:
+                value = str(value)
+        return " ".join(str(value).split()).strip()
 
     def _authorize_via_facilitator(self, price: str, destination_address: str):
         payment_payload = {

@@ -3,80 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroPay | Agentic Economy on Arc</title>
+    <title>NanoPay | Agentic Economy on Arc</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
-            --bg-a: #071123;
-            --bg-b: #101f38;
-            --ink: #e6edf8;
-            --muted: #9eb3ce;
-            --accent: #16a3ff;
-            --accent-2: #20e3b2;
+            --cherry-red: #FF4747;
+            --butter-yellow: #F7E998;
         }
         body {
-            background:
-                radial-gradient(circle at 15% 20%, rgba(32, 227, 178, 0.18), transparent 40%),
-                radial-gradient(circle at 80% 8%, rgba(22, 163, 255, 0.2), transparent 35%),
-                linear-gradient(140deg, var(--bg-a), var(--bg-b));
-            color: var(--ink);
+            background: var(--butter-yellow);
+            color: var(--cherry-red);
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+            min-height: 100vh;
         }
-        .glass {
-            background: rgba(8, 22, 41, 0.7);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(116, 147, 179, 0.25);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.25);
+        .container-main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 48px 0 32px 0;
         }
-        .action-gradient {
-            background: linear-gradient(120deg, var(--accent), var(--accent-2));
+        .card {
+            background: #fffbe7;
+            border-radius: 28px;
+            box-shadow: 0 4px 24px 0 rgba(255,71,71,0.08);
+            border: 1.5px solid var(--cherry-red);
+            padding: 48px 48px 36px 48px;
+            margin-bottom: 40px;
+            min-width: 380px;
         }
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 7px;
-            height: 7px;
+        .header-title {
+            font-size: 2.7rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            color: var(--cherry-red);
+            text-align: center;
+            text-shadow: 1px 1px 0 var(--butter-yellow), 2px 2px 0 var(--cherry-red), 0 2px 8px rgba(255,71,71,0.10);
+            -webkit-text-stroke: 1.5px var(--butter-yellow);
+        }
+        .header-title span {
+            color: var(--butter-yellow);
+            text-shadow: 1px 1px 0 var(--cherry-red), 0 2px 8px rgba(255,71,71,0.10);
+            -webkit-text-stroke: 1.5px var(--cherry-red);
+        }
+        .header-desc {
+            color: var(--cherry-red);
+            opacity: 0.95;
+            font-size: 1.1rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            text-shadow: 1px 1px 0 var(--butter-yellow);
+        }
+        .status-badge {
+            background: var(--butter-yellow);
+            color: var(--cherry-red);
+            border: 2.5px solid var(--cherry-red);
+            border-radius: 999px;
+            padding: 0.5rem 1.2rem;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 2px 8px 0 rgba(255,71,71,0.12);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-shadow: 1px 1px 0 var(--cherry-red), 0 2px 8px rgba(255,71,71,0.10);
+        }
+        .status-dot {
+            width: 0.7rem;
+            height: 0.7rem;
+            border-radius: 50%;
+            background: var(--cherry-red);
+            display: inline-block;
+        }
+        label, .input-label {
+            color: var(--cherry-red);
+            font-weight: 700;
+            font-size: 1.08rem;
+            text-shadow: 1px 1px 0 var(--butter-yellow);
+        }
+        textarea, input[type="range"] {
+            border: 2.5px solid var(--cherry-red);
+            border-radius: 16px;
+            background: var(--butter-yellow);
+            color: var(--cherry-red);
+            font-size: 1.1rem;
+            width: 100%;
+            padding: 1.2rem 1rem 1.2rem 1rem;
+            margin-top: 0.3rem;
+            margin-bottom: 1.2rem;
+            resize: vertical;
+            box-shadow: 0 2px 8px 0 rgba(255,71,71,0.07);
+            display: flex;
+            align-items: center;
+            line-height: 1.6;
+        }
+        textarea {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            line-height: 1.6;
+            vertical-align: middle;
+        }
+        textarea::placeholder {
+            color: var(--cherry-red);
+            opacity: 0.7;
+            text-shadow: 1px 1px 0 var(--butter-yellow);
+        }
+        input[type="range"] {
+            accent-color: var(--cherry-red);
+            height: 8px;
+            margin-bottom: 0.5rem;
+            background: var(--cherry-red);
+            border-radius: 8px;
+            box-shadow: 0 1px 4px 0 rgba(255,71,71,0.10);
+        }
+        .btn-main {
+            background: var(--cherry-red);
+            color: var(--butter-yellow);
+            border: 2.5px solid var(--butter-yellow);
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 1.15rem;
+            padding: 0.9rem 2.2rem;
+            cursor: pointer;
+            box-shadow: 0 2px 8px 0 rgba(255,71,71,0.13);
+            transition: background 0.2s, transform 0.2s;
+            text-shadow: 1px 1px 0 var(--cherry-red), 0 2px 8px rgba(255,71,71,0.10);
+        }
+        .btn-main:hover {
+            background: #e63a3a;
+            color: #fffbe7;
+            border-color: var(--cherry-red);
+            transform: translateY(-2px) scale(1.03);
+        }
+        .dashboard-section {
+            margin-top: 2.5rem;
+        }
+        .stat-card {
+            background: var(--butter-yellow);
+            border: 2.5px solid var(--cherry-red);
+            border-radius: 18px;
+            padding: 1.2rem 1.2rem 0.7rem 1.2rem;
+            text-align: center;
+            margin-bottom: 1.2rem;
+            box-shadow: 0 2px 8px 0 rgba(255,71,71,0.10);
+        }
+        .stat-label {
+            color: var(--cherry-red);
+            font-size: 1.02rem;
+            font-weight: 800;
+            opacity: 0.95;
+            margin-bottom: 0.2rem;
+            text-shadow: 1px 1px 0 var(--butter-yellow);
+        }
+        .stat-value {
+            color: var(--butter-yellow);
+            font-size: 2.1rem;
+            font-weight: 900;
+            text-shadow: 1.5px 1.5px 0 var(--cherry-red), 0 2px 8px rgba(255,71,71,0.10);
+            -webkit-text-stroke: 1.5px var(--cherry-red);
+        }
+        .prose, .prose * {
+            color: var(--cherry-red) !important;
+            text-shadow: 1px 1px 0 var(--butter-yellow);
+        }
+        .glass, .card, .stat-card {
+            box-shadow: 0 2px 12px 0 rgba(255,71,71,0.07);
         }
         .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: #2c4058;
-            border-radius: 9999px;
-        }
-        .animate-fade-in {
-            animation: fade-in 280ms ease-out;
-        }
-        @keyframes fade-in {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+            background: var(--cherry-red);
         }
     </style>
 </head>
 <body class="font-sans antialiased min-h-screen">
-    <div class="max-w-7xl mx-auto px-4 py-8 md:py-12">
-        <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
+    <div class="container-main">
+        <header style="display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 2.5rem; gap: 1.2rem;">
             <div>
-                <h1 class="text-4xl md:text-5xl font-black tracking-tight">Neuro<span class="text-cyan-300">Pay</span></h1>
-                <p class="text-slate-300 mt-2 max-w-2xl">Autonomous AI research network with real x402 payments and Arc settlement proof.</p>
+                <div class="header-title">Nano<span>Pay</span></div>
+                <div class="header-desc">Autonomous AI research network with real x402 payments and Arc settlement proof.</div>
             </div>
-            <div class="glass px-4 py-3 rounded-full text-sm font-medium inline-flex items-center gap-2 self-start md:self-auto">
-                <span id="connection-status" class="w-2.5 h-2.5 rounded-full bg-amber-400"></span>
+            <div class="status-badge">
+                <span id="connection-status" class="status-dot"></span>
                 <span id="connection-label">WebSocket: connecting</span>
             </div>
         </header>
 
-        <section id="input-screen" class="space-y-6">
-            <div class="glass p-6 md:p-8 rounded-3xl space-y-6">
-                <div>
-                    <label class="block text-sm font-semibold text-slate-300 mb-2">Research Query</label>
-                    <textarea
-                        id="query-input"
-                        rows="5"
-                        class="w-full bg-slate-950/60 border border-slate-700 rounded-2xl p-4 text-white placeholder-slate-500 focus:ring-2 focus:ring-cyan-400 focus:outline-none transition"
-                        placeholder="Example: Comprehensive analysis of AI regulation across G20 nations and downstream biotech commercialization implications."></textarea>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-end">
-                    <div class="md:col-span-8">
-                        <label class="block text-sm font-semibold text-slate-300 mb-2">
-                            Budget Cap: <span id="budget-value" class="text-cyan-300">$0.50</span> USDC
-                        </label>
+        <section id="input-screen">
+            <div class="card" style="max-width: 700px; margin: 0 auto;">
+                <label for="query-input" class="input-label">Research Query</label>
+                <textarea
+                    id="query-input"
+                    rows="5"
+                    placeholder="Example: Comprehensive analysis of AI regulation across G20 nations and downstream biotech commercialization implications."></textarea>
+                <div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 2rem;">
+                    <div style="flex: 1 1 0;">
+                        <label for="budget-slider" class="input-label">Budget Cap: <span id="budget-value">$0.50</span> USDC</label>
                         <input
                             type="range"
                             id="budget-slider"
@@ -84,11 +204,10 @@
                             max="5.0"
                             step="0.1"
                             value="0.5"
-                            class="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400"
                         >
                     </div>
-                    <div class="md:col-span-4 md:text-right">
-                        <button id="run-btn" class="action-gradient px-8 py-4 rounded-2xl font-extrabold text-slate-950 hover:opacity-95 transition transform hover:scale-[1.02] inline-flex items-center gap-2">
+                    <div style="flex-shrink: 0;">
+                        <button id="run-btn" class="btn-main">
                             <span>Run Research</span>
                             <i class="fas fa-rocket"></i>
                         </button>
@@ -97,65 +216,54 @@
             </div>
         </section>
 
-        <section id="dashboard-screen" class="hidden space-y-8">
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                <div class="glass p-6 rounded-3xl text-center">
-                    <p class="text-slate-400 text-xs uppercase tracking-[0.2em] mb-2">Total Spent</p>
-                    <p id="stat-spent" class="text-3xl font-bold text-white">$0.000 USDC</p>
+        <section id="dashboard-screen" class="hidden dashboard-section">
+            <div style="display: flex; flex-direction: row; gap: 2.5rem; justify-content: center;">
+                <div class="stat-card" style="flex: 1 1 0; min-width: 180px;">
+                    <div class="stat-label">Total Spent</div>
+                    <div id="stat-spent" class="stat-value">$0.000 USDC</div>
                 </div>
-                <div class="glass p-6 rounded-3xl text-center">
-                    <p class="text-slate-400 text-xs uppercase tracking-[0.2em] mb-2">Transactions</p>
-                    <p id="stat-tx-count" class="text-3xl font-bold text-white">0</p>
+                <div class="stat-card" style="flex: 1 1 0; min-width: 180px;">
+                    <div class="stat-label">Transactions</div>
+                    <div id="stat-tx-count" class="stat-value">0</div>
                 </div>
-                <div class="glass p-6 rounded-3xl text-center sm:col-span-2 lg:col-span-1">
-                    <p class="text-slate-400 text-xs uppercase tracking-[0.2em] mb-2">Progress</p>
-                    <p id="stat-progress" class="text-3xl font-bold text-white">0%</p>
+                <div class="stat-card" style="flex: 1 1 0; min-width: 180px;">
+                    <div class="stat-label">Progress</div>
+                    <div id="stat-progress" class="stat-value">0%</div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 md:gap-8">
-                <div class="xl:col-span-4 glass p-6 rounded-3xl">
-                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="fas fa-stream text-cyan-300"></i>
-                        Live Settlement Feed
-                    </h3>
-                    <div id="tx-feed" class="space-y-3 h-[460px] overflow-y-auto custom-scrollbar pr-2">
-                        <div class="text-slate-400 text-center py-10 italic">Waiting for payment-settled events...</div>
+                <div style="display: flex; flex-direction: row; gap: 2.5rem; margin-top: 2.5rem;">
+                    <div class="card" style="flex: 1 1 0; min-width: 340px;">
+                        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--cherry-red); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-stream"></i> Live Settlement Feed</h3>
+                        <div id="tx-feed" class="custom-scrollbar" style="height: 320px; overflow-y: auto; padding-right: 0.5rem;">
+                            <div class="italic" style="color: var(--cherry-red); opacity: 0.7; text-align: center; padding: 2.5rem 0;">Waiting for payment-settled events...</div>
+                        </div>
                     </div>
-                </div>
-
-                <div class="xl:col-span-8 glass p-6 md:p-8 rounded-3xl">
-                    <h3 class="text-lg font-semibold mb-4 flex items-center gap-2">
-                        <i class="fas fa-file-alt text-cyan-300"></i>
-                        Synthesized Report
-                    </h3>
-                    <div id="report-content" class="prose prose-invert max-w-none text-slate-200 space-y-4 overflow-y-auto h-[460px] custom-scrollbar">
-                        <div class="flex flex-col items-center justify-center h-full text-slate-400 italic">
-                            <i class="fas fa-spinner fa-spin text-3xl mb-4"></i>
-                            <p>Coordinator is decomposing, settling, and synthesizing...</p>
+                    <div class="card" style="flex: 2 1 0; min-width: 520px;">
+                        <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--cherry-red); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-file-alt"></i> Synthesized Report</h3>
+                        <div id="report-content" class="prose custom-scrollbar" style="height: 320px; overflow-y: auto;">
+                            <div class="italic" style="color: var(--cherry-red); opacity: 0.7; text-align: center; padding: 2.5rem 0;">Coordinator is decomposing, settling, and synthesizing...</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="glass p-6 rounded-3xl border-l-4 border-cyan-400 bg-cyan-500/5">
-                <h4 class="font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="fas fa-chart-line text-cyan-300"></i>
-                    Margin Analysis: Circle Nanopayments vs Legacy Rails
-                </h4>
-                <div class="overflow-x-auto custom-scrollbar">
-                    <table class="w-full text-left text-sm text-slate-300">
+            <div class="card" style="border-left: 6px solid var(--cherry-red); background: var(--butter-yellow); min-width: 520px;">
+                <h4 style="font-weight: 800; margin-bottom: 1.2rem; color: var(--cherry-red); display: flex; align-items: center; gap: 0.5rem;"><i class="fas fa-chart-line"></i> Margin Analysis: Circle Nanopayments vs Legacy Rails</h4>
+                <div class="custom-scrollbar" style="overflow-x: auto;">
+                    <table style="width: 100%; text-align: left; font-size: 1rem; color: var(--cherry-red);">
                         <thead>
-                            <tr class="border-b border-slate-700">
-                                <th class="pb-3 pr-4">Rail</th>
-                                <th class="pb-3 pr-4">Base Fee</th>
-                                <th class="pb-3 pr-4">Cost For This Run</th>
-                                <th class="pb-3">Relative to Circle</th>
+                            <tr style="border-bottom: 2px solid var(--cherry-red);">
+                                <th style="padding-bottom: 0.7rem; padding-right: 1.2rem;">Rail</th>
+                                <th style="padding-bottom: 0.7rem; padding-right: 1.2rem;">Base Fee</th>
+                                <th style="padding-bottom: 0.7rem; padding-right: 1.2rem;">Cost For This Run</th>
+                                <th style="padding-bottom: 0.7rem;">Relative to Circle</th>
                             </tr>
                         </thead>
                         <tbody id="margin-table-body">
-                            <tr class="border-b border-slate-800/80">
-                                <td colspan="4" class="py-4 text-slate-400 italic">Run a query to compute real margin analysis.</td>
+                            <tr style="border-bottom: 1px solid var(--cherry-red);">
+                                <td colspan="4" style="padding: 1.2rem 0; color: var(--cherry-red); opacity: 0.7; font-style: italic;">Run a query to compute real margin analysis.</td>
                             </tr>
                         </tbody>
                     </table>

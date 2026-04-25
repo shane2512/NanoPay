@@ -182,7 +182,7 @@ async function main() {
   }
 
   const results = [];
-  console.log("Registering NeuroPay agents on ERC-8004 IdentityRegistry...");
+  console.log("Registering NanoPay agents on ERC-8004 IdentityRegistry...");
   console.log(`IdentityRegistry: ${IDENTITY_REGISTRY}`);
 
   for (const spec of walletSpecs) {

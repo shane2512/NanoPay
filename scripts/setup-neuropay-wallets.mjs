@@ -1,5 +1,5 @@
 /**
- * setup-neuropay-wallets.mjs: Create the NeuroPay Agent Network
+ * setup-neuropay-wallets.mjs: Create the NanoPay Agent Network
  *
  * This script is updated to handle API keys exactly as required by the
  * @circle-fin/developer-controlled-wallets SDK.
@@ -17,7 +17,7 @@ import {
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const OUTPUT_DIR = path.join(__dirname, "../output");
-const WALLET_SET_NAME = "NeuroPay-Agent-Network";
+const WALLET_SET_NAME = "NanoPay-Agent-Network";
 
 async function main() {
   let apiKey = process.env.CIRCLE_API_KEY;
@@ -32,7 +32,7 @@ async function main() {
   const envPath = path.join(__dirname, "../.env");
 
   // 1. Force Register New Entity Secret
-  console.log("🚀 Force-registering a NEW NeuroPay Entity Secret...");
+  console.log("🚀 Force-registering a NEW NanoPay Entity Secret...");
   if (!fs.existsSync(OUTPUT_DIR)) {
     fs.mkdirSync(OUTPUT_DIR, { recursive: true });
   }
@@ -76,7 +76,7 @@ async function main() {
   });
 
   // 3. Create Wallet Set
-  console.log("\n📦 Creating NeuroPay Wallet Set...");
+  console.log("\n📦 Creating NanoPay Wallet Set...");
   const walletSetResponse = await client.createWalletSet({ name: WALLET_SET_NAME });
   const walletSet = walletSetResponse.data?.walletSet;
   if (!walletSet?.id) throw new Error("Wallet Set creation failed");
@@ -113,7 +113,7 @@ async function main() {
   updateEnv("VALIDATION_REGISTRY_ADDRESS", process.env.VALIDATION_REGISTRY_ADDRESS || "0x8004Cb1BF31DAf7788923b405b754f57acEB4272");
 
   fs.writeFileSync(
-    path.join(OUTPUT_DIR, "neuropay-wallets.json"),
+    path.join(OUTPUT_DIR, "nanopay-wallets.json"),
     JSON.stringify({ coordinator, specA, specB, walletSetId: walletSet.id }, null, 2),
     "utf-8"
   );
