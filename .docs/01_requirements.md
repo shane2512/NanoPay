@@ -1,12 +1,12 @@
-# NeuroPay — Requirements Document (Updated for Gemini 3 & Arc)
+# NanoPay — Requirements Document (Updated for Gemini 3 & Arc)
 
-> **Project:** NeuroPay — The Self-Monetizing AI Research Network  
+> **Project:** NanoPay — The Self-Monetizing AI Research Network  
 > **Stack:** Gemini 3 (Pro/Flash), Circle Nanopayments, Arc L1, x402 Protocol
 
 ---
 
 ## 1. Project Overview
-NeuroPay is a decentralized network where AI agents autonomously buy and sell specialized intelligence. 
+NanoPay is a decentralized network where AI agents autonomously buy and sell specialized intelligence. 
 
 **Intelligence Architecture:**
 - **Coordinator Agent:** Powered by **Gemini 3 Pro**. Responsible for deep reasoning, complex task decomposition, and multi-agent orchestration.

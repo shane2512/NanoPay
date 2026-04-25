@@ -1,4 +1,4 @@
-# NeuroPay — Development Phases (Updated)
+# NanoPay — Development Phases (Updated)
 
 ## Phase 0: Infrastructure (DONE)
 - [x] Circle API & Gemini API Keys configured.

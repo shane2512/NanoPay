@@ -1,4 +1,4 @@
-# NeuroPay — User Flow (Updated for Gemini 3)
+# NanoPay — User Flow (Updated for Gemini 3)
 
 ## Flow: The Agentic Commerce Loop
 

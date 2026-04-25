@@ -1,10 +1,10 @@
 {
-  "name": "neuropay",
+  "name": "nanopay",
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "setup-wallets": "node --env-file=.env scripts/setup-neuropay-wallets.mjs",
-    "register-agents": "node --env-file=.env scripts/register-neuropay-agents.mjs"
+    "setup-wallets": "node --env-file=.env scripts/setup-nanopay-wallets.mjs",
+    "register-agents": "node --env-file=.env scripts/register-nanopay-agents.mjs"
   },
   "dependencies": {
     "@circle-fin/developer-controlled-wallets": "^10.3.0"

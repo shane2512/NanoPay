@@ -1,4 +1,4 @@
-# NeuroPay — Final Testing Plan (Claude Code)
+# NanoPay — Final Testing Plan (Claude Code)
 
 > **Purpose:** Step-by-step test suite for Claude Code to execute before submission  
 > **Run order:** Unit → Integration → E2E → Demo Validation → Submission Checklist  
@@ -542,7 +542,7 @@ Run through this checklist in order before submitting:
 - [ ] Circle Developer Console screenshot saved (shows 50+ Nanopayments transactions)
 
 ### LabLab.ai Submission Form
-- [ ] Project title: "NeuroPay"
+- [ ] Project title: "NanoPay"
 - [ ] Track selected: Agentic Payment Loop (+ X402 Commerce)
 - [ ] Circle products used field completed:
   ```
