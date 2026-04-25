@@ -1,6 +1,6 @@
 import google.generativeai as genai
 
-genai.configure(api_key="AIzaSyC5M8RmnUStvcZkdE00oh4tLGX17GB_SKI")
+genai.configure(api_key="YOUR_GEMINI_API_KEY")
 
 # Test 1: Can we list models?
 for m in genai.list_models():
